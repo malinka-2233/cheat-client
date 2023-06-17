@@ -579,6 +579,7 @@ public final class WidgetID
 		{
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
+			static final int TO_CALL = 6;
 		}
 
 		static class HLR
@@ -593,6 +594,7 @@ public final class WidgetID
 		static final int TEAM = 2;
 
 		static final int ROLE_SPRITE = 10;
+		static final int TO_CALL = 5;
 		static final int ROLE = 11;
 
 		static final int REWARD_TEXT = 57;

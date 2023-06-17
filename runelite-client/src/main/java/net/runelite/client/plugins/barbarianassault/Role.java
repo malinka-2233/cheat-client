@@ -32,13 +32,14 @@ import net.runelite.api.widgets.WidgetInfo;
 @Getter
 enum Role
 {
-	ATTACKER(WidgetInfo.BA_ATK_ROLE_TEXT, WidgetInfo.BA_ATK_ROLE_SPRITE),
-	DEFENDER(WidgetInfo.BA_DEF_ROLE_TEXT, WidgetInfo.BA_DEF_ROLE_SPRITE),
-	COLLECTOR(WidgetInfo.BA_COLL_ROLE_TEXT, WidgetInfo.BA_COLL_ROLE_SPRITE),
-	HEALER(WidgetInfo.BA_HEAL_ROLE_TEXT, WidgetInfo.BA_HEAL_ROLE_SPRITE);
+	ATTACKER(WidgetInfo.BA_ATK_ROLE_TEXT, WidgetInfo.BA_ATK_ROLE_SPRITE, WidgetInfo.BA_ATK_CALL_TEXT),
+	DEFENDER(WidgetInfo.BA_DEF_ROLE_TEXT, WidgetInfo.BA_DEF_ROLE_SPRITE, WidgetInfo.BA_ATK_CALL_TEXT),
+	COLLECTOR(WidgetInfo.BA_COLL_ROLE_TEXT, WidgetInfo.BA_COLL_ROLE_SPRITE, WidgetInfo.BA_ATK_CALL_TEXT),
+	HEALER(WidgetInfo.BA_HEAL_ROLE_TEXT, WidgetInfo.BA_HEAL_ROLE_SPRITE, WidgetInfo.BA_ATK_CALL_TEXT);
 
 	private final WidgetInfo roleText;
 	private final WidgetInfo roleSprite;
+	private final WidgetInfo call;
 
 	@Override
 	public String toString()

@@ -27,13 +27,17 @@ package net.runelite.client.plugins.barbarianassault;
 
 import com.google.inject.Provides;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -47,6 +51,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -57,6 +62,8 @@ import net.runelite.client.util.ImageUtil;
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
+
+	private final List<MenuEntry> entries = new ArrayList<>();
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
@@ -153,6 +160,39 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (config.removeWrong() && getCurrentRound() != null && event.getTarget().endsWith("horn"))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			WidgetInfo callInfo = getCurrentRound().getRoundRole().getCall();
+			Widget callWidget = client.getWidget(callInfo);
+			String call = Calls.getOption(callWidget.getText());
+			MenuEntry correctCall = null;
+
+			entries.clear();
+			for (MenuEntry entry : menuEntries)
+			{
+				String option = entry.getOption();
+				if (option.equals(call))
+				{
+					correctCall = entry;
+				}
+				else if (!option.startsWith("Tell-"))
+				{
+					entries.add(entry);
+				}
+			}
+
+			if (correctCall != null)
+			{
+				entries.add(correctCall);
+				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
+			}
+		}
+	}
+
+	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarbitId() == Varbits.IN_GAME_BA && event.getValue() == 0)
@@ -214,4 +254,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
 	}
+
+
+
 }

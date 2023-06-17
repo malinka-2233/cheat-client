@@ -17,14 +17,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -168,7 +161,7 @@ public class VorkathPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onProjectileSpawned(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		if (!isAtVorkath() || vorkath == null)
 		{
