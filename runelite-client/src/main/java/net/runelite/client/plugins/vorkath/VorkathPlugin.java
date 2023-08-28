@@ -81,6 +81,7 @@ public class VorkathPlugin extends Plugin {
     @Getter(AccessLevel.PACKAGE)
     private Rectangle wooxWalkBar;
     private int lastAcidSpotsSize = 0;
+    private int currentAnimationID = -1;
 
     public static final int VORKATH_WAKE_UP = 7950;
     public static final int VORKATH_DEATH = 7949;
@@ -242,6 +243,10 @@ public class VorkathPlugin extends Plugin {
         }
 
         final Actor actor = event.getActor();
+        if (isAtVorkath() && vorkath != null && actor.equals(vorkath.getVorkath())){
+            currentAnimationID = actor.getAnimation();
+            log.debug("curr animation  {}", currentAnimationID);
+        }
 
         if (isAtVorkath() && vorkath != null && actor.equals(vorkath.getVorkath())
                 && actor.getAnimation() == VorkathAttack.SLASH_ATTACK.getVorkathAnimationID()) {
@@ -276,12 +281,6 @@ public class VorkathPlugin extends Plugin {
 			Check if the stored projectile has expired. If expired, then reset it to null.
 		 */
         vorkathProjectiles.removeIf(p -> p.getRemainingCycles() <= 0);
-        int currentAnimationID = vorkath.getVorkath().getAnimation();
-
-        if (lastNPCAnim != currentAnimationID) {
-            lastNPCAnim = currentAnimationID;
-            checkVorkathSlashAttack(currentAnimationID);
-        }
 
         // Update the acid free path every tick to account for player movement
         if (config.indicateAcidFreePath() && !acidSpots.isEmpty()) {
